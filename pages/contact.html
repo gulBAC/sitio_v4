@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <div class="section">
+    <h3 class="header green-text text-darken-1">Contacto</h3>
+    <h5>¿Necesitas ayuda?</h5>
+    <p>Si estás buscando soporte técnico con GNU/Linux o alguna herramienta libre te invitamos a buscar nuestra próxima <a class="green-text" href="/meetups">meetup</a> o escribínos para saber cuándo nos juntamos.</p>
+    <h5>¿Querés sumarte?</h5>
+    <p>Siempre estamos buscando sumar personas con ganas de hacer cosas. Si este es tu caso y querés colaborar con la organización de eventos o meetups, escribínos y suscribite a nuestra lista de correo para empezar a participar.</p>
+    <div style="position: relative; height: 70px; margin-top: 10px;">
+      <div class="fixed-action-btn horizontal click-to-toggle" style="position: absolute; top: 10px; right: 24px;">
+        <a class="btn-floating btn-large green">
+          <i class="material-icons">mode_edit</i>
+        </a>
+        <ul>
+          <li>
+            <a class="btn-floating blue darken-4 center" href="https://www.facebook.com/messages/t/GulBAC">
+              <img src="{% static 'images/facebook.svg' %}" width="24" style="margin-top: 7px;"/>
+            </a>
+          </li>
+          <li>
+            <a class="btn-floating blue lighten-2 center" href="https://twitter.com/messages/compose?recipient_id=68052385">
+              <img src="{% static 'images/twitter.svg' %}" width="24" style="margin-top: 7px;"/>
+            </a>
+          </li>
+          <li>
+            <a class="btn-floating grey lighten-1" href="https://listas.usla.org.ar/cgi-bin/mailman/listinfo/gulbac">
+              <i class="material-icons">email</i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

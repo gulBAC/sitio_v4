@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <div class="section">
+    <h3 class="header green-text text-darken-1">Meetups y Eventos</h3>
+    <div id="meetups">
+      <div class="center-align">
+        <div class="preloader-wrapper active" v-show="loading">
+          <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" v-if="first_event" v-cloak>
+        <div class="col s12 m8 offset-m2">
+          <div class="card">
+            <div class="card-image">
+              <img src="{% static 'images/gulbac-3.jpg' %}">
+              <span class="card-title black-transparent"><a :href="first_event.link" class="white-text">[[ first_event.name ]]</a></span>
+              <a :href="first_event.link" :class="{green: first_event.status != 'past', red: first_event.status == 'past' }" class="btn-floating btn-large halfway-fab waves-effect waves-light">
+                <i class="material-icons">[[ first_event.status == 'past' ? 'event_busy' : 'event_available' ]]</i>
+              </a>
+            </div>
+            <div class="card-content">
+              <h5>Descripción</h5>
+              <p v-html="getDescription(first_event)"></p>
+              <h5>Fecha</h5>
+              <p>[[ getDateTime(first_event) ]]</p>
+              <div v-if="first_event.venue">
+                <h5>Lugar</h5>
+                <p>[[ first_event.venue.name ]] - [[ first_event.venue.address_1 ]]</p>
+              </div>
+            </div>
+            <div class="card-action" v-if="first_event.status != 'past'">
+              <a :href="first_event.link">Más info</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" v-if="events.length" v-cloak>
+        <div class="col s12 m8 offset-m2">
+          <div class="collection with-header">
+            <div class="collection-header">
+              <strong>Anteriores</strong>
+            </div>
+            <a class="collection-item" v-for="event in events" :href="event.link">
+              [[ event.name ]]
+              <div class="chip green white-text right icon-block" style="margin-top: -5px;">
+                [[ event.yes_rsvp_count ]] <i class="material-icons">group</i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    var vmMeetups = new Vue({
+      el: "#meetups",
+      delimiters: ["[[", "]]"],
+      data: {
+        loading: true,
+        events_url: "https://api.meetup.com/gulbac/events",
+        first_event: null,
+        events: []
+      },
+      mounted: function() {
+        this.getEvents();
+      },
+      methods: {
+        getEvents: function() {
+          var vmMeetups = this;
+          var data = {
+            scroll: "next_upcoming",
+            status: "past",
+            desc: true,
+            page: 10
+          }
+
+          $.get(vmMeetups.events_url, data, function(resp) {
+            if (resp.data.length) {
+              vmMeetups.first_event = resp.data.shift();
+              vmMeetups.events = resp.data;
+            }
+
+            vmMeetups.loading = false;
+          }, "jsonp");
+        },
+        getDescription: function(event) {
+          var description = event.description;
+
+          return description.substring(3, description.indexOf("</p>"));
+        },
+        getDateTime: function(event) {
+          var datetime = moment(event.time);
+
+          return datetime.locale("es-AR").format("DD [de] MMMM [de] YYYY - HH:mm [hs.]");
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}
