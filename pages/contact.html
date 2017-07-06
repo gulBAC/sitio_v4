@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="container">
+<div id="contact" class="container">
   <div class="section">
     <h3 class="header green-text text-darken-1">Contacto</h3>
     <h5>¿Necesitas ayuda?</h5>
-    <p>Si estás buscando soporte técnico con GNU/Linux o alguna herramienta libre te invitamos a nuestra próxima <a class="green-text" href="/meetups">meetup</a>. Si no hay ninguna, ¡escribinos!.</p>
+    <p>
+      Si estás buscando soporte técnico con GNU/Linux o alguna herramienta libre te invitamos a nuestra próxima <a class="green-text" href="/meetups">meetup</a>. Si no hay ninguna, <a class="green-text" href="#" @click.prevent="animateButton('animateMasterButton')">¡escribinos!.</a>
+    </p>
     <h5>¿Querés sumarte?</h5>
-    <p>Siempre estamos sumando personas con ganas de hacer cosas. Si este es tu caso y querés colaborar con la organización de eventos o meetups, escribínos y suscribite a nuestra lista de correo para empezar a participar.</p>
-    <div style="position: relative; height: 70px; margin-top: 10px;">
-      <div class="fixed-action-btn horizontal click-to-toggle" style="position: absolute; top: 10px; right: 24px;">
-        <a class="btn-floating btn-large green">
+    <p>
+      Siempre estamos sumando personas con ganas de hacer cosas. Si este es tu caso y querés colaborar con la organización de eventos o meetups, <a class="green-text" href="#" @click.prevent="animateButton('animateMail')">escribínos y suscribite a nuestra lista de correo</a> para empezar a participar.
+    </p>
+    <div style="position: relative; height: 70px; margin-top: 20px;">
+      <div id="contactButton" class="fixed-action-btn horizontal click-to-toggle" style="position: absolute; top: 10px; right: 24px;">
+        <a class="btn-floating btn-large green" :class="{pulse: animateMasterButton}" @click="stopAnimations">
           <i class="material-icons">mode_edit</i>
         </a>
         <ul>
@@ -25,7 +29,7 @@
             </a>
           </li>
           <li>
-            <a class="btn-floating grey lighten-1" href="https://listas.usla.org.ar/cgi-bin/mailman/listinfo/gulbac">
+            <a class="btn-floating grey lighten-1" :class="{pulse: animateMail}" href="https://listas.usla.org.ar/cgi-bin/mailman/listinfo/gulbac">
               <i class="material-icons">email</i>
             </a>
           </li>
@@ -34,4 +38,41 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    var vmContact = new Vue({
+      el: "#contact",
+      data: {
+        animateMasterButton: false,
+        animateMail: false
+      },
+      methods: {
+        animateButton: function(animate) {
+          this.stopAnimations();
+          this.scrollToButton();
+
+          if (animate) {
+            this[animate] = true;
+          }
+        },
+        stopAnimations: function() {
+          this.animateMasterButton = false;
+          this.animateMail = false;
+        },
+        scrollToButton: function() {
+          var button = $("#contactButton");
+          window.scroll({
+            top: button.offset().top - 200,
+            left: 0,
+            behavior: 'smooth'
+          });
+          button.openFAB();
+        }
+      }
+    });
+  });
+</script>
 {% endblock %}
