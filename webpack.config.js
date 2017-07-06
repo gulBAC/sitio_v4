@@ -44,7 +44,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"development"' //change to enable/disable vuejs debug
+        NODE_ENV: '"production"' //change to enable/disable vuejs debug
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
