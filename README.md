@@ -25,7 +25,12 @@ $ ./node_modules/webpack/bin/webpack.js
 $ sudo apt-get install easy_install
 $ sudo easy_install cactus
 ```
-
+2. Instalar usando virtualenv
+```
+$ virtualenv -p python3 env
+$ source env/bin/activate
+$ pip install -r requirements.txt
+```
 ### Ejecutar servidor
 ```
 $ cactus serve
